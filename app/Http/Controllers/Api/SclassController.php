@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+// use Illuminate\Validation\Validator; 
 use DB;
 
 class SclassController extends Controller
@@ -15,11 +16,11 @@ class SclassController extends Controller
      */
     public function index()
     {
-        
         $sclass =DB::table('sclasses')->get();
         return response()->json($sclass);
     }
     /**
+     * 
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -28,7 +29,7 @@ class SclassController extends Controller
     public function store(Request $request)
     {
         $validateData=$request->validate([
-            'class_name'=>'required|unique:sclasses|max:25'
+            'class_name' => 'required|unique:sclasses|max:25'
         ]);
 
         $data=array();
@@ -44,9 +45,9 @@ class SclassController extends Controller
      */
     public function show($id)
     {
-        //
+      $show=DB::table('sclasses')->where('id',$id)->first();
+      return response()->json($show);  
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -55,9 +56,8 @@ class SclassController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -67,9 +67,11 @@ class SclassController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         $data=array();
+        $data['class_name']=$request->class_name;
+        $insert=DB::table('sclasses')->where('id',$id)->update($data);
+        return response('Updated Successfully');  
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -78,6 +80,7 @@ class SclassController extends Controller
      */
     public function destroy($id)
     {
-        //
+       DB::table('sclasses')->where('id',$id)->delete();
+       return response('Deleted');
     }
 }
