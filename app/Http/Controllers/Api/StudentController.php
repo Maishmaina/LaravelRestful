@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Model\Section;
+use Illuminate\Support\Facades\Hash;
+use DB;
 
-class SectionController extends Controller
+class StudentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,8 @@ class SectionController extends Controller
      */
     public function index()
     {
-        //
-        $section=Section::all();
-        return response()->json($section);
+        $student=DB::table('students')->get();
+        return response()->json($student);
     }
     /**
      * Store a newly created resource in storage.
@@ -27,14 +27,18 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData=$request->validate([
-            'class_id' => 'required',
-            'section_name' => 'required'
-        ]);
-     //use Eloquent model
-
-     $section =Section::create($request->all());
-     return response('Section Inserted');
+        $data=array();
+        $data['class_id']= $request->class_id;
+        $data['section_id']= $request->section_id;
+        $data['name']= $request->name;
+        $data['phone']= $request->phone;
+        $data['email']= $request->email;
+        $data['password']= Hash::make($request->password);
+        $data['photo']= $request->photo;
+        $data['address']= $request->address;
+        $data['gender']= $request->gender;
+        DB::table('students')->insert($data);
+        return response('Student Inserted');
     }
     /**
      * Display the specified resource.
@@ -44,8 +48,7 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-        $section=Section::findOrFail($id);
-        return response()->json($section);
+        
     }
 
     /**
@@ -57,10 +60,9 @@ class SectionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $section=Section::findOrFail($id);
-        $section->update($request->all());
-        return response('Updated Successfully');
+        //
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -69,7 +71,6 @@ class SectionController extends Controller
      */
     public function destroy($id)
     {
-        Section::where('id',$id)->delete();
-        return response('Deleted');
+        //
     }
 }
