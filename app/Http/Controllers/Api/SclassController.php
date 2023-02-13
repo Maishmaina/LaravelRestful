@@ -31,7 +31,6 @@ class SclassController extends Controller
         $validateData=$request->validate([
             'class_name' => 'required|unique:sclasses|max:25'
         ]);
-
         $data=array();
         $data['class_name']=$request->class_name;
         $insert=DB::table('sclasses')->insert($data);
