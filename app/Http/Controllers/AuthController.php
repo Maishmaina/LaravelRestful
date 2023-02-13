@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth,Hash;
 use Illuminate\Http\Request;
+use DB;
+
 
 class AuthController extends Controller
 {
@@ -13,7 +15,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login','register']]);
     }
     /**
      * Get a JWT via given credentials.
@@ -72,5 +74,29 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    /**
+     * Register new user
+     * 
+     * @return \Illuminate\Http\JsonResponse 
+     * 
+     * 
+     * */
+
+    public function register(Request $request){
+        $validateData=$request->validate([
+         'name'=>'required|string|max:255',
+         'email'=>'required|string|email|max:100|unique:users',
+         'password'=>'required|string|min:6|confirmed'
+            
+        ]);
+        $data=array();
+        $data['name']=$request->name;
+        $data['email']=$request->email;
+        $data['password']=Hash::make($request->password);
+        DB::table('users')->insert($data);
+        return $this->login($request);
+    
     }
 }
