@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use DB;
-use App\Model\Student;
-
+use DB;// query builder
+use App\Model\Student;// eloquent 
 class StudentController extends Controller
 {
     /**
@@ -15,7 +14,6 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
     public function index()
     {
         $student=DB::table('students')->get();
@@ -44,7 +42,6 @@ class StudentController extends Controller
     }
     /**
      * Display the specified resource.
-     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

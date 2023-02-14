@@ -34,12 +34,10 @@ class SubjectController extends Controller
             'subject_code' => 'required|unique:subjects|max:25'
         ]);
      //use Eloquent model
-
      $suject =Subject::create($request->all());
      return response('Subject Inserted');
 
     }
-
     /**
      * Display the specified resource.
      *
@@ -51,7 +49,6 @@ class SubjectController extends Controller
         $sub=Subject::findOrFail($id);
         return response()->json($sub);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -62,12 +59,9 @@ class SubjectController extends Controller
     public function update(Request $request, $id)
     {
         $subject=Subject::findOrFail($id);
-
         $subject->update($request->all());
-        return response('Updated Successfully');
-        
+        return response('Updated Successfully');    
     }
-
     /**
      * Remove the specified resource from storage.
      *
